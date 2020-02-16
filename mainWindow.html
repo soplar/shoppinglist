@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ShoppingList</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+<body>
+    <nav>
+        <div nav-wrapper>
+            <a class="brand-logo center">ShoppingList</a>            
+        </div>
+    </nav>
+    <ul></ul>
+    <script>
+        const electron = require('electron');
+        const {ipcRenderer} = electron;
+        const ul = document.querySelector('ul');
+        
+        // add item
+        ipcRenderer.on('itemNaarMainWindow:add', function(e, item){
+            // opmaak toevoegen
+            ul.className = 'collection';
+            // add item als li aan ul
+            const li = document.createElement('li');
+            li.className = 'collection-item';
+            const itemText = document.createTextNode(item);
+            li.appendChild(itemText);
+            ul.appendChild(li);        
+        });
+        // clear item
+        ipcRenderer.on('itemClearNaarMainWindow:clear', function(){
+            ul.innerHTML = '';
+            // verwijderen van de classs als er
+            // geen items meer zijn
+            // anders zie je nog een lijn
+            if(ul.children.length == 0){
+                ul.className = '';
+            }
+        });
+
+        // Remove item
+        ul.addEventListener('dblclick', removeItem);
+        function removeItem(e){
+            e.target.remove();
+            // verwijderen van de classs als er
+            // geen items meer zijn
+            // anders zie je nog een lijn
+            if(ul.children.length == 0){
+                ul.className = '';
+            }
+        }
+    </script>
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</body>
+</html>

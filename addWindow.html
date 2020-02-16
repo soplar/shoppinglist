@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add shopping list item</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+<body>
+    <div class="container">
+        <form>
+            <div>
+                <label>Enter item</label>
+                <input type="text" id="item" autofocus>
+            </div>
+            <button class="btn waves-effect waves-light" type="submit">Add Item</button>
+        </form>
+    </div>
+    <script>
+        const electron = require('electron');
+        const {ipcRenderer} = electron;
+
+        const form = document.querySelector('form');
+        form.addEventListener('submit', submitForm);
+        
+        function submitForm(e){
+            e.preventDefault();
+            // console.log(123);
+            const item =document.querySelector('#item').value;
+            // ongeveer zoiets als het verzenden van client naar server
+            // of te wel van addWindow.html naar main.js
+            // van browser omgeving naar node omgeving met id
+            ipcRenderer.send('item:add', item);
+        }
+    </script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
